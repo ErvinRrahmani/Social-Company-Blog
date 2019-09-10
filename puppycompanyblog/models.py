@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    profile_image = db.Column(db.String(64), nullable=False, 'default_profile.png')
+    profile_image = db.Column(db.String(64), nullable=False, default='default_profile.png')
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
@@ -27,10 +27,10 @@ class User(db.Model, UserMixin):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password, password) ### Check the difference between password and password_hash
+        return check_password_hash(self.password_hash, password) ### Check the difference between password and password_hash
 
 
-    def __repr__:
+    def __repr__():
         return f"Username {self.username}"
 
 class BlogPost(db.Model):
@@ -40,7 +40,7 @@ class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)   ### db.ForeignKey('users.id') in this *users* is the table name above and the id is the attribute of the users table which is getting to create the relationship
     date = db.Column(db.DateTime,nullable=False, default=datetime.utcnow)
-    title = db.Column(db.String(64), nullable=false,)
+    title = db.Column(db.String(64), nullable=False)
     text = db.Column(db.Text, nullable=False)
 
     def __init__(self, text,user_id):

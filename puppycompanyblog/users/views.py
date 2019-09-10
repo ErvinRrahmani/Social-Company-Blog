@@ -39,7 +39,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
 
-        user = user.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
 
         if user.check_password(form.password.data) and user is not None:
 
@@ -61,7 +61,7 @@ def login():
 @users.route("/logout")
 def logout():
     logout_user()
-    return redirect(url("core.index"))
+    return redirect(url_for("core.index"))
 
 # account   (update UserForm)
 @users.route('/account', methods=['GET','POST'])
@@ -79,7 +79,7 @@ def account():
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
-        flash ("User Account Updated!")
+        flash ("User Account Updated!   ")
         return redirect(url_for('users.account'))
 
     elif request.method == "GET":
